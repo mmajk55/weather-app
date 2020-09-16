@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createGlobalStyle } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
+import WeatherForecast from './views/WeatherForecast';
+import { theme } from './theme';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const GlobalStyles = createGlobalStyle`
+html {
+  font-size: 62.5%
 }
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-size: 1.4rem;
+}
+h1 {
+  font-size: 2.4rem;
+}
+`;
+
+const App: React.FC = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <WeatherForecast />
+    </ThemeProvider>
+  );
+};
 
 export default App;
