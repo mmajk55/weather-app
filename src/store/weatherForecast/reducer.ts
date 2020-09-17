@@ -2,9 +2,12 @@ import { createReducer } from 'redux-act';
 import { put, takeEvery } from 'redux-saga/effects';
 import { fetchWeatherForecast, fetchWeatherForecastSuccess, fetchWeatherForecastFailure } from './actions';
 import { fetchWeatherForecastService } from './service';
+import { groupDays } from '../../utils/groupData';
 
 const initialState: any = {
-  weatherForecast: undefined,
+  weatherForecastList: undefined,
+  statusCode: undefined,
+  city: undefined,
   error: undefined,
 };
 
@@ -15,7 +18,9 @@ export const weatherForecastReducer = createReducer(
     }),
     [fetchWeatherForecastSuccess as any]: (state: any, weatherForecast: any) => ({
       ...state,
-      weatherForecast,
+      statusCode: weatherForecast.cod,
+      city: weatherForecast.city ? weatherForecast.city.name : undefined,
+      weatherForecastList: weatherForecast.list ? groupDays(weatherForecast.list) : undefined,
     }),
     [fetchWeatherForecastFailure as any]: (state: any, error: any) => ({
       ...state,
@@ -29,9 +34,9 @@ function* onFetchWeatherForecast({ payload }) {
   try {
     const weatherForecastData = yield fetchWeatherForecastService({ town: payload });
 
-    console.log(weatherForecastData);
     yield put(fetchWeatherForecastSuccess(weatherForecastData));
   } catch (error) {
+    console.log(error);
     yield put(fetchWeatherForecastFailure(error));
   }
 }

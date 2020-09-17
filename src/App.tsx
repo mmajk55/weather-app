@@ -1,7 +1,7 @@
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
-import WeatherForecast from './views/WeatherForecast';
+import WeatherForecast from './views/WeatherForecast/WeatherForecast';
 import { theme } from './theme';
 
 const GlobalStyles = createGlobalStyle`

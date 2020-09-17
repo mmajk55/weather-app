@@ -1,11 +1,12 @@
 import React from 'react';
-import Container from '../components/Container/Container';
-import Box from '../components/Box/Box';
-import InputSearch from '../components/InputSearch/InputSearch';
-import Button from '../components/Button/Button';
+import Container from '../../components/Container/Container';
+import DailyBox from '../../components/DailyBox/DailyBox';
+import InputSearch from '../../components/InputSearch/InputSearch';
+import Button from '../../components/Button/Button';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { fetchWeatherForecast } from '../store/weatherForecast/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchWeatherForecast } from '../../store/weatherForecast/actions';
+import { statusCodes } from './consts';
 
 const StyledWeatherForecast = styled.div`
   width: 100%;
@@ -23,13 +24,17 @@ const StyledSearchWrapper = styled.div`
 `;
 
 const WeatherForecast: React.FC = () => {
+  const [town, setTown] = React.useState(undefined);
   const dispatch = useDispatch();
-  const [town, setTown] = React.useState('warszawa');
+  const { statusCode, weatherForecastList, city } = useSelector((state: any) => state);
 
   const fetchWeatherForecastHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    dispatch(fetchWeatherForecast(town));
+    if (town) {
+      dispatch(fetchWeatherForecast(town));
+    }
+    return;
   };
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => setTown(event.target.value);
@@ -41,9 +46,13 @@ const WeatherForecast: React.FC = () => {
           <InputSearch onChange={inputHandler} />
           <Button text="Szukaj" onClick={fetchWeatherForecastHandler} />
         </StyledSearchWrapper>
-        <Box>
-          <h1>Weather</h1>
-        </Box>
+        {city && <h1>Prognoza pogody dla miasta: {city}</h1>}
+        {weatherForecastList &&
+          statusCode === statusCodes.SUCCESS &&
+          Object.keys(weatherForecastList).map((key, i) => (
+            <DailyBox key={i} day={key} data={weatherForecastList[key]} />
+          ))}
+        {statusCode === statusCodes.NOT_FOUND && <p>Nie znaleziono miasta.</p>}
       </StyledWeatherForecast>
     </Container>
   );
