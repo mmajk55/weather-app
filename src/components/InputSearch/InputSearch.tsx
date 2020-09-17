@@ -1,6 +1,10 @@
 import React from 'react';
 import { styled } from '../../theme';
 
+interface IInputSearchProps {
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 const StyledWrapper = styled.div`
   display: flex;
   width: 300px;
@@ -15,10 +19,10 @@ const StyledInputSearch = styled.input`
   padding: ${(props) => props.theme.metrics.metricXS} 0;
 `;
 
-const InputSearch: React.FC = () => {
+const InputSearch: React.FC<IInputSearchProps> = ({ onChange }) => {
   return (
     <StyledWrapper>
-      <StyledInputSearch type="text" placeholder="Wpisz nazwę miasta" />
+      <StyledInputSearch onChange={onChange} type="text" placeholder="Wpisz nazwę miasta" />
     </StyledWrapper>
   );
 };

@@ -1,6 +1,6 @@
 import { createAction } from 'redux-act';
 
-export const fetchWeatherForecast = createAction('Fetch weather forecast');
+export const fetchWeatherForecast = createAction<any>('Fetch weather forecast');
 
 export const fetchWeatherForecastSuccess = createAction<any>('Fetch weather forecast success');
 

@@ -4,6 +4,8 @@ import Box from '../components/Box/Box';
 import InputSearch from '../components/InputSearch/InputSearch';
 import Button from '../components/Button/Button';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { fetchWeatherForecast } from '../store/weatherForecast/actions';
 
 const StyledWeatherForecast = styled.div`
   width: 100%;
@@ -21,23 +23,23 @@ const StyledSearchWrapper = styled.div`
 `;
 
 const WeatherForecast: React.FC = () => {
-  React.useEffect(() => {
-    (async () => {
-      const result = await fetch(
-        `${process.env.REACT_APP_API_URL}/forecast/?q=london&units=metric&APPID=${process.env.REACT_APP_API_KEY}`,
-      );
-      const data = await result.json();
+  const dispatch = useDispatch();
+  const [town, setTown] = React.useState('warszawa');
 
-      console.log(data);
-    })();
-  }, []);
+  const fetchWeatherForecastHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    dispatch(fetchWeatherForecast(town));
+  };
+
+  const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => setTown(event.target.value);
 
   return (
     <Container>
       <StyledWeatherForecast>
         <StyledSearchWrapper>
-          <InputSearch />
-          <Button text="Szukaj" />
+          <InputSearch onChange={inputHandler} />
+          <Button text="Szukaj" onClick={fetchWeatherForecastHandler} />
         </StyledSearchWrapper>
         <Box>
           <h1>Weather</h1>

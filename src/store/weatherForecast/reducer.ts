@@ -29,6 +29,7 @@ function* onFetchWeatherForecast({ payload }) {
   try {
     const weatherForecastData = yield fetchWeatherForecastService({ town: payload });
 
+    console.log(weatherForecastData);
     yield put(fetchWeatherForecastSuccess(weatherForecastData));
   } catch (error) {
     yield put(fetchWeatherForecastFailure(error));

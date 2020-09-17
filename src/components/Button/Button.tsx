@@ -3,6 +3,7 @@ import { styled } from '../../theme';
 
 interface IButtonProps {
   text: string;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const StyledButton = styled.button`
@@ -19,8 +20,8 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button: React.FC<IButtonProps> = ({ text }) => {
-  return <StyledButton>{text}</StyledButton>;
+const Button: React.FC<IButtonProps> = ({ text, onClick }) => {
+  return <StyledButton onClick={onClick}>{text}</StyledButton>;
 };
 
 export default Button;
