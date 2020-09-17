@@ -29,6 +29,7 @@ const StyledSearchWrapper = styled.div`
 const StyledHeader = styled.h1`
   color: ${(props) => props.theme.colors.blue};
   text-align: center;
+  margin-bottom: ${(props) => props.theme.metrics.metricL};
 `;
 
 const WeatherForecast: React.FC = () => {
@@ -49,8 +50,8 @@ const WeatherForecast: React.FC = () => {
 
   return (
     <Container>
-      <StyledHeader>Prognoza Pogody</StyledHeader>
       <StyledWeatherForecast>
+        <StyledHeader>Prognoza Pogody</StyledHeader>
         <StyledSearchWrapper>
           <InputSearch onChange={inputHandler} />
           {!isLoading ? (
