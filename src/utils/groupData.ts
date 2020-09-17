@@ -16,8 +16,9 @@ export const getDayName = (date) => {
 
 export const getTime = (date) => {
   const dateObject = new Date(date);
+  const hours = dateObject.getHours();
 
-  return dateObject.getHours();
+  return hours ? hours : date;
 };
 
 export const getMax = (arr) => Math.round(Math.max(...arr.map((item) => item.main.temp)));

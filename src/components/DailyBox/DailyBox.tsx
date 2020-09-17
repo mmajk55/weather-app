@@ -19,8 +19,12 @@ const StyledDailyBox = styled.div`
 `;
 
 const StyledDate = styled.span`
-  margin-left: ${(props) => props.theme.metrics.metricS};
   font-style: italic;
+  display: block;
+  @media (min-width: ${(props) => props.theme.breakPoints.tablet}) {
+    display: inline-block;
+    margin-left: ${(props) => props.theme.metrics.metricS};
+  }
 `;
 
 const StyledWeatherBoxWrapper = styled.div`

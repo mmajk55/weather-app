@@ -15,6 +15,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-size: 1.4rem;
+    overflow-x: hidden;
 }
 h1 {
   font-size: 2.4rem;
