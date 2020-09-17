@@ -11,7 +11,6 @@ import { statusCodes } from './consts';
 
 const StyledWeatherForecast = styled.div`
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-flow: column;
   align-items: center;
