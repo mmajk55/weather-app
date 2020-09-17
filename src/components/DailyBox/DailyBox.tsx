@@ -1,6 +1,8 @@
 import React from 'react';
 import { styled } from '../../theme';
-import { getDayName, getMax, getMin, getMean } from '../../utils/groupData';
+import { getMax, getMin, getMean } from '../../utils/groupData';
+import Moment from 'react-moment';
+import 'moment/locale/pl';
 import WeatherBox from '../WeatherBox/WeatherBox';
 
 interface IDailyBoxProps {
@@ -21,10 +23,6 @@ const StyledDailyBox = styled.div`
 const StyledDate = styled.span`
   font-style: italic;
   display: block;
-  @media (min-width: ${(props) => props.theme.breakPoints.tablet}) {
-    display: inline-block;
-    margin-left: ${(props) => props.theme.metrics.metricS};
-  }
 `;
 
 const StyledWeatherBoxWrapper = styled.div`
@@ -48,7 +46,7 @@ const DailyBox: React.FC<IDailyBoxProps> = ({ data, day }) => (
   <StyledDailyBox>
     <StyledStats>
       <h3>
-        {getDayName(day).toUpperCase()}
+        <Moment locale="pl" format="dddd" date={day} />
         <StyledDate>{day}</StyledDate>
       </h3>
       <StyledValue>Min: {getMin(data)}&#186;C</StyledValue>

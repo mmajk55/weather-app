@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { getTime } from '../../utils/groupData';
+import Moment from 'react-moment';
+import 'moment/locale/pl';
 
 interface IWeatherBoxProps {
   mainInfo: any;
@@ -25,7 +26,9 @@ const StyledValue = styled.div`
 const WeatherBox: React.FC<IWeatherBoxProps> = ({ time, mainInfo, icon }) => {
   return (
     <StyledWrapper>
-      <StyledValue>{getTime(time)}</StyledValue>
+      <StyledValue>
+        <Moment locale="pl" format="LT" date={time} />
+      </StyledValue>
       <img src={`http://openweathermap.org/img/w/${icon}.png`} alt="icon" />
       <StyledValue>{Math.round(mainInfo.temp)} &#186;C</StyledValue>
       <StyledValue>Wilgotność: {mainInfo.humidity}%</StyledValue>
