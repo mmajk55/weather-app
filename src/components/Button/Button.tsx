@@ -6,7 +6,7 @@ interface IButtonProps {
 }
 
 const StyledButton = styled.button`
-  border: 1px solid ${(props) => props.theme.colors.purple};
+  border: 1px solid ${(props) => props.theme.colors.blue};
   background-color: transparent;
   padding: ${(props) => props.theme.metrics.metricS};
   width: 300px;
@@ -14,7 +14,7 @@ const StyledButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.purple};
+    background-color: ${(props) => props.theme.colors.blue};
     color: ${(props) => props.theme.colors.white};
   }
 `;

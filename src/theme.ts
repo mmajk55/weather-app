@@ -1,7 +1,7 @@
 import baseStyled, { ThemedStyledInterface } from 'styled-components';
 
 const colors = {
-  purple: '#591780',
+  blue: '#158ca1',
   white: '#fff',
   black: '#000',
   grey: '#f3f4f8',

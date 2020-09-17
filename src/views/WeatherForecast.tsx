@@ -21,6 +21,17 @@ const StyledSearchWrapper = styled.div`
 `;
 
 const WeatherForecast: React.FC = () => {
+  React.useEffect(() => {
+    (async () => {
+      const result = await fetch(
+        `${process.env.REACT_APP_API_URL}/forecast/?q=london&units=metric&APPID=${process.env.REACT_APP_API_KEY}`,
+      );
+      const data = await result.json();
+
+      console.log(data);
+    })();
+  }, []);
+
   return (
     <Container>
       <StyledWeatherForecast>
@@ -28,7 +39,7 @@ const WeatherForecast: React.FC = () => {
           <InputSearch />
           <Button text="Szukaj" />
         </StyledSearchWrapper>
-        <Box boxWidth="75vw">
+        <Box>
           <h1>Weather</h1>
         </Box>
       </StyledWeatherForecast>

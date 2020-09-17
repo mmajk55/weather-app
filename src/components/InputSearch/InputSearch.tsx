@@ -10,7 +10,7 @@ const StyledWrapper = styled.div`
 const StyledInputSearch = styled.input`
   width: 100%;
   border: none;
-  border-bottom: 1px solid ${(props) => props.theme.colors.purple};
+  border-bottom: 1px solid ${(props) => props.theme.colors.blue};
   outline: none;
   padding: ${(props) => props.theme.metrics.metricXS} 0;
 `;
