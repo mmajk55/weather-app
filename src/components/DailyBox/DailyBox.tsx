@@ -1,7 +1,6 @@
 import React from 'react';
 import { styled } from '../../theme';
-// import Video from '../../assets/Blue_Sky_and_Clouds_Timelapse_0892__Videvo.mov';
-import { getDayName } from '../../utils/groupData';
+import { getDayName, getMax, getMin, getMean } from '../../utils/groupData';
 import WeatherBox from '../WeatherBox/WeatherBox';
 
 interface IDailyBoxProps {
@@ -19,17 +18,6 @@ const StyledDailyBox = styled.div`
   margin-bottom: ${(props) => props.theme.metrics.metricM};
 `;
 
-// const StyledVideo = styled.video`
-//   position: absolute;
-//   width: 100%;
-//   height: 100%;
-//   top: 0;
-//   left: 0;
-//   object-fit: cover;
-//   z-index: -1;
-//   opacity: 0.5;
-// `;
-
 const StyledDate = styled.span`
   margin-left: ${(props) => props.theme.metrics.metricS};
   font-style: italic;
@@ -41,25 +29,34 @@ const StyledWeatherBoxWrapper = styled.div`
   overflow-x: auto;
 `;
 
-const DailyBox: React.FC<IDailyBoxProps> = ({ data, day }) => {
-  React.useEffect(() => {
-    console.log(data);
-  }, [data]);
+const StyledStats = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-  return (
-    <StyledDailyBox>
+const StyledValue = styled.div`
+  color: ${(props) => props.theme.colors.blue};
+  text-align: center;
+  margin-left: ${(props) => props.theme.metrics.metricS};
+`;
+
+const DailyBox: React.FC<IDailyBoxProps> = ({ data, day }) => (
+  <StyledDailyBox>
+    <StyledStats>
       <h3>
         {getDayName(day).toUpperCase()}
         <StyledDate>{day}</StyledDate>
       </h3>
-
-      <StyledWeatherBoxWrapper>
-        {data.map((info, i) => (
-          <WeatherBox key={i} icon={info.weather[0].icon} mainInfo={info.main} time={info.dt_txt} />
-        ))}
-      </StyledWeatherBoxWrapper>
-    </StyledDailyBox>
-  );
-};
+      <StyledValue>Min: {getMin(data)}&#186;C</StyledValue>
+      <StyledValue>Max: {getMax(data)}&#186;C</StyledValue>
+      <StyledValue>Śr: {getMean(data.map((temp) => temp.main.temp))} &#186;C</StyledValue>
+    </StyledStats>
+    <StyledWeatherBoxWrapper>
+      {data.map((info, i) => (
+        <WeatherBox key={i} icon={info.weather[0].icon} mainInfo={info.main} time={info.dt_txt} />
+      ))}
+    </StyledWeatherBoxWrapper>
+  </StyledDailyBox>
+);
 
 export default DailyBox;

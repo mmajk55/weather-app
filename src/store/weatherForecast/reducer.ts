@@ -9,22 +9,26 @@ const initialState: any = {
   statusCode: undefined,
   city: undefined,
   error: undefined,
+  isLoading: false,
 };
 
 export const weatherForecastReducer = createReducer(
   {
     [fetchWeatherForecast as any]: (state: any) => ({
       ...state,
+      isLoading: true,
     }),
     [fetchWeatherForecastSuccess as any]: (state: any, weatherForecast: any) => ({
       ...state,
       statusCode: weatherForecast.cod,
       city: weatherForecast.city ? weatherForecast.city.name : undefined,
       weatherForecastList: weatherForecast.list ? groupDays(weatherForecast.list) : undefined,
+      isLoading: false,
     }),
     [fetchWeatherForecastFailure as any]: (state: any, error: any) => ({
       ...state,
       error,
+      isLoading: false,
     }),
   },
   initialState,
