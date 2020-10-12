@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import Moment from 'react-moment';
+import { StyledValue, StyledWrapper } from './WeatherBox.styles';
 import 'moment/locale/pl';
 
 interface IWeatherBoxProps {
@@ -8,20 +8,6 @@ interface IWeatherBoxProps {
   time: string;
   icon: string;
 }
-
-const StyledWrapper = styled.div`
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  padding: ${(props) => props.theme.metrics.metricS};
-`;
-
-const StyledValue = styled.div`
-  color: ${(props) => props.theme.colors.blue};
-  text-align: center;
-  margin-bottom: ${(props) => props.theme.metrics.metricXS};
-`;
 
 const WeatherBox: React.FC<IWeatherBoxProps> = ({ time, mainInfo, icon }) => {
   return (

@@ -3,6 +3,8 @@ import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
 import WeatherForecast from './views/WeatherForecast/WeatherForecast';
 import { theme } from './theme';
+import { WeatherForecastContextProvider } from './store/weatherForecast/weatherForecastContext';
+import { AppContextProvider } from './store/app/app.context';
 
 const GlobalStyles = createGlobalStyle`
 html {
@@ -24,10 +26,14 @@ h1 {
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <WeatherForecast />
-    </ThemeProvider>
+    <AppContextProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <WeatherForecastContextProvider>
+          <WeatherForecast />
+        </WeatherForecastContextProvider>
+      </ThemeProvider>
+    </AppContextProvider>
   );
 };
 
