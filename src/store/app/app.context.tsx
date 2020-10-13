@@ -4,7 +4,10 @@ import { AppActionType, ProviderValue, AppState, AppActions } from './app.types'
 const initialappState: AppState = {
   error: undefined,
   isLoading: false,
-  userLocation: undefined,
+  userLocation: {
+    lat: undefined,
+    long: undefined,
+  },
 };
 
 const reducer = (appState: AppState, payload: AppActions) => {

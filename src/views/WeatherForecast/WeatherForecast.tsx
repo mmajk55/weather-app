@@ -49,7 +49,7 @@ const WeatherForecast: React.FC = () => {
       }
       return;
     },
-    [town],
+    [town, userLocation],
   );
 
   const inputHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTown(event.target.value), []);

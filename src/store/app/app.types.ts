@@ -1,7 +1,7 @@
 export type AppState = {
   error: undefined | any;
   isLoading: boolean;
-  userLocation: any;
+  userLocation: Cords;
 };
 
 export type ProviderValue = {
@@ -12,7 +12,7 @@ export type ProviderValue = {
 export type Cords = {
   lat: number;
   long: number;
-}
+};
 
 export type GetUserLocation = {
   type: AppActionType.GET_USER_LOCATION;
