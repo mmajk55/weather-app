@@ -5,6 +5,7 @@ export const StyledButton = styled.button`
   background-color: transparent;
   padding: ${(props) => props.theme.metrics.metricS};
   width: 300px;
+  margin-bottom: ${(props) => props.theme.metrics.metricXS};
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 

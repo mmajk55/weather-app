@@ -5,7 +5,7 @@ import InputSearch from '../../components/InputSearch/InputSearch';
 import Button from '../../components/Button/Button';
 import Loader from 'react-loader-spinner';
 import { StyledHeader, StyledSearchWrapper, StyledWeatherForecast } from './WeatherForecast.styles';
-import { statusCodes } from '../../utils/consts';
+import { geolocationApiOptions, statusCodes } from '../../utils/consts';
 import { WeatherForecastContext } from '../../store/weatherForecast/weatherForecast.context';
 import {
   fetchWeatherForecastByLocationService,
@@ -14,6 +14,7 @@ import {
 import { AppContext } from '../../store/app/app.context';
 import { WeatherForecastActionType } from '../../store/weatherForecast/weatherForecast.types';
 import { AppActionType, Cords } from '../../store/app/app.types';
+import { getUserLocationService } from '../../store/app/app.service';
 
 const WeatherForecast: React.FC = () => {
   const [town, setTown] = useState(undefined);
@@ -57,6 +58,20 @@ const WeatherForecast: React.FC = () => {
 
   const inputHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTown(event.target.value), []);
 
+  const getUserLocationHandler = async () => {
+    try {
+      const position = await getUserLocationService(geolocationApiOptions);
+      const positionCords = {
+        lat: position.coords.latitude,
+        long: position.coords.longitude,
+      };
+
+      appDispatch({ type: AppActionType.GET_USER_LOCATION, cords: positionCords });
+    } catch (error) {
+      appDispatch({ type: AppActionType.ERROR, error: error });
+    }
+  };
+
   const handleKeypress = (event: React.KeyboardEvent<HTMLInputElement>) =>
     event.key === 'Enter' && fetchWeatherForecastHandler();
 
@@ -69,6 +84,7 @@ const WeatherForecast: React.FC = () => {
             <React.Fragment>
               <InputSearch onChange={inputHandler} onKeyPress={handleKeypress} />
               <Button text="Szukaj" onClick={fetchWeatherForecastHandler} />
+              <Button text="Moja lokalizacja" onClick={getUserLocationHandler} />
             </React.Fragment>
           ) : (
             <React.Fragment>

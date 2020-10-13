@@ -1,12 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
 import WeatherForecast from './views/WeatherForecast/WeatherForecast';
 import { theme } from './theme';
 import { WeatherForecastContextProvider } from './store/weatherForecast/weatherForecast.context';
-import { AppActionType } from './store/app/app.types';
-import { AppContext } from './store/app/app.context';
-
 const GlobalStyles = createGlobalStyle`
 html {
   font-size: 62.5%
@@ -26,27 +23,6 @@ h1 {
 `;
 
 const App: React.FC = () => {
-  const { appDispatch } = useContext(AppContext);
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const positionCords = {
-            lat: position.coords.latitude,
-            long: position.coords.longitude,
-          };
-
-          appDispatch({ type: AppActionType.GET_USER_LOCATION, cords: positionCords });
-        },
-        (error) => {
-          appDispatch({ type: AppActionType.ERROR, error: error });
-        },
-        { maximumAge: 600000, timeout: 10000 },
-      );
-    }
-  }, []);
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
