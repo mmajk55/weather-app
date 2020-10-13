@@ -28,21 +28,18 @@ const WeatherForecast: React.FC = () => {
   } = useContext(AppContext);
 
   useEffect(() => {
-    userLocation.lat && userLocation.long && fetchWeatherForecastHandler(null, userLocation);
+    userLocation.lat && userLocation.long && fetchWeatherForecastByLocationHandler({ userLocation });
   }, [userLocation]);
 
   const fetchWeatherForecastHandler = useCallback(
-    async (event?: React.MouseEvent<HTMLButtonElement>, location?: Cords) => {
+    async (event?: React.MouseEvent<HTMLButtonElement>) => {
       event && event.preventDefault();
 
-      if (town || (location.lat && location.long)) {
-        let forecast;
+      if (town) {
         appDispatch({ type: AppActionType.LOADING });
 
         try {
-          town
-            ? (forecast = await fetchWeatherForecastService({ town }))
-            : (forecast = await fetchWeatherForecastByLocationService({ userLocation: location }));
+          const forecast = await fetchWeatherForecastService({ town });
 
           weatherForecastDispatch({ type: WeatherForecastActionType.FETCH_WEATHER_FORECAST, payload: forecast });
         } catch (error) {
@@ -53,10 +50,24 @@ const WeatherForecast: React.FC = () => {
       }
       return;
     },
-    [town, userLocation],
+    [town],
   );
 
   const inputHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTown(event.target.value), []);
+
+  const fetchWeatherForecastByLocationHandler = async ({ userLocation }: { userLocation: Cords }) => {
+    appDispatch({ type: AppActionType.LOADING });
+
+    try {
+      const forecast = await fetchWeatherForecastByLocationService({ userLocation });
+
+      weatherForecastDispatch({ type: WeatherForecastActionType.FETCH_WEATHER_FORECAST, payload: forecast });
+    } catch (error) {
+      appDispatch({ type: AppActionType.ERROR, error: error });
+    }
+
+    appDispatch({ type: AppActionType.STOP_LOADING });
+  };
 
   const getUserLocationHandler = async () => {
     try {
@@ -84,7 +95,7 @@ const WeatherForecast: React.FC = () => {
             <React.Fragment>
               <InputSearch onChange={inputHandler} onKeyPress={handleKeypress} />
               <Button text="Szukaj" onClick={fetchWeatherForecastHandler} />
-              <Button text="Moja lokalizacja" onClick={getUserLocationHandler} />
+              <Button text="Użyj mojej lokalizacji" onClick={getUserLocationHandler} />
             </React.Fragment>
           ) : (
             <React.Fragment>
