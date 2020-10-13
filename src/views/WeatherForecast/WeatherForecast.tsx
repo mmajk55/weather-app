@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useContext, useCallback, useEffect } from 'react';
 import Container from '../../components/Container/Container';
 import DailyBox from '../../components/DailyBox/DailyBox';
 import InputSearch from '../../components/InputSearch/InputSearch';
@@ -7,32 +7,42 @@ import Loader from 'react-loader-spinner';
 import { StyledHeader, StyledSearchWrapper, StyledWeatherForecast } from './WeatherForecast.styles';
 import { statusCodes } from '../../utils/consts';
 import { WeatherForecastContext } from '../../store/weatherForecast/weatherForecastContext';
-import { fetchWeatherForecastService } from '../../store/weatherForecast/weatherForecast.service';
+import {
+  fetchWeatherForecastByLocationService,
+  fetchWeatherForecastService,
+} from '../../store/weatherForecast/weatherForecast.service';
 import { AppContext } from '../../store/app/app.context';
 import { WeatherForecastActionType } from '../../store/weatherForecast/weatherForecasttypes';
-import { AppActionType } from '../../store/app/app.types';
+import { AppActionType, Cords } from '../../store/app/app.types';
 
 const WeatherForecast: React.FC = () => {
   const [town, setTown] = React.useState(undefined);
   const { weatherForecastDispatch, weatherForecastState } = useContext(WeatherForecastContext);
   const {
     appDispatch,
-    appState: { isLoading },
+    appState: { isLoading, userLocation },
   } = useContext(AppContext);
 
+  useEffect(() => {
+    userLocation && fetchWeatherForecastHandler(null, userLocation);
+  }, [userLocation]);
+
   const fetchWeatherForecastHandler = useCallback(
-    async (event?: React.MouseEvent<HTMLButtonElement>) => {
+    async (event?: React.MouseEvent<HTMLButtonElement>, location?: Cords) => {
       event && event.preventDefault();
 
-      if (town) {
+      if (town || location) {
+        let forecast;
         appDispatch({ type: AppActionType.LOADING });
 
         try {
-          const forecast = await fetchWeatherForecastService({ town });
+          town
+            ? (forecast = await fetchWeatherForecastService({ town }))
+            : (forecast = await fetchWeatherForecastByLocationService({ userLocation: location }));
 
           weatherForecastDispatch({ type: WeatherForecastActionType.FETCH_WEATHER_FORECAST, payload: forecast });
         } catch (error) {
-          appDispatch({ type: AppActionType.ERROR, data: error });
+          appDispatch({ type: AppActionType.ERROR, error: error });
         }
 
         appDispatch({ type: AppActionType.STOP_LOADING });
