@@ -24,14 +24,14 @@ const WeatherForecast: React.FC = () => {
   } = useContext(AppContext);
 
   useEffect(() => {
-    userLocation && fetchWeatherForecastHandler(null, userLocation);
-  }, [userLocation]);
+    userLocation.lat && userLocation.long && fetchWeatherForecastHandler(null, userLocation);
+  }, [userLocation.lat, userLocation.long]);
 
   const fetchWeatherForecastHandler = useCallback(
     async (event?: React.MouseEvent<HTMLButtonElement>, location?: Cords) => {
       event && event.preventDefault();
 
-      if (town || location) {
+      if (town || (location.lat && location.long)) {
         let forecast;
         appDispatch({ type: AppActionType.LOADING });
 
@@ -57,27 +57,33 @@ const WeatherForecast: React.FC = () => {
   const handleKeypress = (event: React.KeyboardEvent<HTMLInputElement>) =>
     event.key === 'Enter' && fetchWeatherForecastHandler();
 
+  const { city, statusCode, weatherForecastList } = weatherForecastState;
+
   return (
     <Container>
       <StyledWeatherForecast>
         <StyledHeader>Prognoza Pogody</StyledHeader>
         <StyledSearchWrapper>
-          <InputSearch onChange={inputHandler} onKeyPress={handleKeypress} />
           {!isLoading ? (
-            <Button text="Szukaj" onClick={fetchWeatherForecastHandler} />
+            <React.Fragment>
+              <InputSearch onChange={inputHandler} onKeyPress={handleKeypress} />
+              <Button text="Szukaj" onClick={fetchWeatherForecastHandler} />
+            </React.Fragment>
           ) : (
-            <Loader type="Oval" color="#158ca1" height={50} width={50} />
+            <React.Fragment>
+              <p>Wyszukiwanie miasta</p>
+              <Loader type="Oval" color="#158ca1" height={50} width={50} />
+            </React.Fragment>
           )}
         </StyledSearchWrapper>
-        {weatherForecastState && weatherForecastState.city && <h2>Miasto: {weatherForecastState.city}</h2>}
-        {weatherForecastState &&
-          weatherForecastState.weatherForecastList &&
-          Object.keys(weatherForecastState.weatherForecastList).map((key, i) => (
-            <DailyBox key={i} day={key} data={weatherForecastState.weatherForecastList[key]} />
+        {city && <h2>Miasto: {city}</h2>}
+        {statusCode &&
+          statusCode === statusCodes.SUCCESS &&
+          weatherForecastList &&
+          Object.keys(weatherForecastList).map((key, i) => (
+            <DailyBox key={i} day={key} data={weatherForecastList[key]} />
           ))}
-        {weatherForecastState &&
-          weatherForecastState.statusCode &&
-          weatherForecastState.statusCode === statusCodes.NOT_FOUND && <p>Nie znaleziono miasta.</p>}
+        {statusCode && statusCode === statusCodes.NOT_FOUND && <p>Nie znaleziono miasta.</p>}
       </StyledWeatherForecast>
     </Container>
   );

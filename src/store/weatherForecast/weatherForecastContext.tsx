@@ -18,8 +18,8 @@ const reducer = (state: WeatherForecastState, { type, payload }: FetchWeatherFor
     case WeatherForecastActionType.FETCH_WEATHER_FORECAST:
       return {
         ...state,
-        weatherForecastList: payload.list ? groupDays(payload.list) : state.weatherForecastList,
-        city: payload.city ? payload.city.name : state.city,
+        weatherForecastList: payload.list ? groupDays(payload.list) : undefined,
+        city: payload.city ? payload.city.name : undefined,
         statusCode: payload.cod,
       };
   }

@@ -11,7 +11,7 @@ const WeatherBox: React.FC<WeatherBoxProps> = ({ time, mainInfo, icon }) => {
       <StyledValue>
         <Moment locale="pl" format="LT" date={time} />
       </StyledValue>
-      <img src={`http://openweathermap.org/img/w/${icon}.png`} alt="icon" />
+      <img src={`https://openweathermap.org/img/w/${icon}.png`} alt="icon" />
       <StyledValue>{temp} &#186;C</StyledValue>
       <StyledValue>Wilgotność: {mainInfo.humidity}%</StyledValue>
     </StyledWrapper>
