@@ -5,7 +5,7 @@ import {
   FetchWeatherForecast,
   WeatherForecastState,
   WeatherForecastActionType,
-} from './weatherForecasttypes';
+} from './weatherForecast.types';
 
 const initialState: WeatherForecastState = {
   weatherForecastList: undefined,

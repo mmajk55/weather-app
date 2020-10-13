@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useEffect } from 'react';
+import React, { useContext, useCallback, useEffect, useState } from 'react';
 import Container from '../../components/Container/Container';
 import DailyBox from '../../components/DailyBox/DailyBox';
 import InputSearch from '../../components/InputSearch/InputSearch';
@@ -6,18 +6,21 @@ import Button from '../../components/Button/Button';
 import Loader from 'react-loader-spinner';
 import { StyledHeader, StyledSearchWrapper, StyledWeatherForecast } from './WeatherForecast.styles';
 import { statusCodes } from '../../utils/consts';
-import { WeatherForecastContext } from '../../store/weatherForecast/weatherForecastContext';
+import { WeatherForecastContext } from '../../store/weatherForecast/weatherForecast.context';
 import {
   fetchWeatherForecastByLocationService,
   fetchWeatherForecastService,
 } from '../../store/weatherForecast/weatherForecast.service';
 import { AppContext } from '../../store/app/app.context';
-import { WeatherForecastActionType } from '../../store/weatherForecast/weatherForecasttypes';
+import { WeatherForecastActionType } from '../../store/weatherForecast/weatherForecast.types';
 import { AppActionType, Cords } from '../../store/app/app.types';
 
 const WeatherForecast: React.FC = () => {
-  const [town, setTown] = React.useState(undefined);
-  const { weatherForecastDispatch, weatherForecastState } = useContext(WeatherForecastContext);
+  const [town, setTown] = useState(undefined);
+  const {
+    weatherForecastDispatch,
+    weatherForecastState: { city, statusCode, weatherForecastList },
+  } = useContext(WeatherForecastContext);
   const {
     appDispatch,
     appState: { isLoading, userLocation },
@@ -25,7 +28,7 @@ const WeatherForecast: React.FC = () => {
 
   useEffect(() => {
     userLocation.lat && userLocation.long && fetchWeatherForecastHandler(null, userLocation);
-  }, [userLocation.lat, userLocation.long]);
+  }, [userLocation]);
 
   const fetchWeatherForecastHandler = useCallback(
     async (event?: React.MouseEvent<HTMLButtonElement>, location?: Cords) => {
@@ -56,8 +59,6 @@ const WeatherForecast: React.FC = () => {
 
   const handleKeypress = (event: React.KeyboardEvent<HTMLInputElement>) =>
     event.key === 'Enter' && fetchWeatherForecastHandler();
-
-  const { city, statusCode, weatherForecastList } = weatherForecastState;
 
   return (
     <Container>

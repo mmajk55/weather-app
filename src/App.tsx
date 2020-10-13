@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
 import WeatherForecast from './views/WeatherForecast/WeatherForecast';
 import { theme } from './theme';
-import { WeatherForecastContextProvider } from './store/weatherForecast/weatherForecastContext';
+import { WeatherForecastContextProvider } from './store/weatherForecast/weatherForecast.context';
 import { AppActionType } from './store/app/app.types';
 import { AppContext } from './store/app/app.context';
 
