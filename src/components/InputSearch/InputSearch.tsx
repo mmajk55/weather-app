@@ -2,9 +2,9 @@ import React from 'react';
 import { StyledWrapper, StyledInputSearch } from './InputSearch.styles';
 import { InputSearchProps } from './InputSearch.types';
 
-const InputSearch: React.FC<InputSearchProps> = ({ onChange }) => (
+const InputSearch: React.FC<InputSearchProps> = ({ onChange, onKeyPress }) => (
   <StyledWrapper>
-    <StyledInputSearch onChange={onChange} type="text" placeholder="Wpisz nazwę miasta" />
+    <StyledInputSearch onKeyDown={onKeyPress} onChange={onChange} type="text" placeholder="Wpisz nazwę miasta" />
   </StyledWrapper>
 );
 

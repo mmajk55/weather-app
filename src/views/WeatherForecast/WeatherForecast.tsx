@@ -21,8 +21,8 @@ const WeatherForecast: React.FC = () => {
   } = useContext(AppContext);
 
   const fetchWeatherForecastHandler = useCallback(
-    async (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
+    async (event?: React.MouseEvent<HTMLButtonElement>) => {
+      event && event.preventDefault();
 
       if (town) {
         appDispatch({ type: AppActionType.LOADING });
@@ -44,12 +44,15 @@ const WeatherForecast: React.FC = () => {
 
   const inputHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTown(event.target.value), []);
 
+  const handleKeypress = (event: React.KeyboardEvent<HTMLInputElement>) =>
+    event.key === 'Enter' && fetchWeatherForecastHandler();
+
   return (
     <Container>
       <StyledWeatherForecast>
         <StyledHeader>Prognoza Pogody</StyledHeader>
         <StyledSearchWrapper>
-          <InputSearch onChange={inputHandler} />
+          <InputSearch onChange={inputHandler} onKeyPress={handleKeypress} />
           {!isLoading ? (
             <Button text="Szukaj" onClick={fetchWeatherForecastHandler} />
           ) : (
