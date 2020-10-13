@@ -29,19 +29,22 @@ const App: React.FC = () => {
   const { appDispatch } = useContext(AppContext);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const positionCords = {
-          lat: position.coords.latitude,
-          long: position.coords.longitude,
-        };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const positionCords = {
+            lat: position.coords.latitude,
+            long: position.coords.longitude,
+          };
 
-        appDispatch({ type: AppActionType.GET_USER_LOCATION, cords: positionCords });
-      },
-      (error) => {
-        appDispatch({ type: AppActionType.ERROR, error: error });
-      },
-    );
+          appDispatch({ type: AppActionType.GET_USER_LOCATION, cords: positionCords });
+        },
+        (error) => {
+          appDispatch({ type: AppActionType.ERROR, error: error });
+        },
+        { maximumAge: 600000, timeout: 10000 },
+      );
+    }
   }, []);
 
   return (
