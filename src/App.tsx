@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider } from 'styled-components';
 import WeatherForecast from './views/WeatherForecast/WeatherForecast';
 import { theme } from './theme';
 import { WeatherForecastContextProvider } from './store/weatherForecast/weatherForecastContext';
-import { AppContextProvider } from './store/app/app.context';
+import { AppActionType } from './store/app/app.types';
+import { AppContext } from './store/app/app.context';
 
 const GlobalStyles = createGlobalStyle`
 html {
@@ -25,15 +26,31 @@ h1 {
 `;
 
 const App: React.FC = () => {
+  const { appDispatch } = useContext(AppContext);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const positionCords = {
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+        };
+
+        appDispatch({ type: AppActionType.GET_USER_LOCATION, cords: positionCords });
+      },
+      (error) => {
+        appDispatch({ type: AppActionType.ERROR, error: error });
+      },
+    );
+  }, []);
+
   return (
-    <AppContextProvider>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <WeatherForecastContextProvider>
-          <WeatherForecast />
-        </WeatherForecastContextProvider>
-      </ThemeProvider>
-    </AppContextProvider>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <WeatherForecastContextProvider>
+        <WeatherForecast />
+      </WeatherForecastContextProvider>
+    </ThemeProvider>
   );
 };
 

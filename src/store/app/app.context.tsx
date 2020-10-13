@@ -4,6 +4,7 @@ import { AppActionType, ProviderValue, AppState, AppActions } from './app.types'
 const initialappState: AppState = {
   error: undefined,
   isLoading: false,
+  userLocation: undefined,
 };
 
 const reducer = (appState: AppState, payload: AppActions) => {
@@ -15,8 +16,13 @@ const reducer = (appState: AppState, payload: AppActions) => {
         ...appState,
         isLoading: false,
       };
+    case AppActionType.GET_USER_LOCATION:
+      return {
+        ...appState,
+        userLocation: payload.cords ? payload.cords : appState.userLocation,
+      };
     case AppActionType.ERROR:
-      return { ...appState, error: payload.data };
+      return { ...appState, error: payload.error };
   }
 };
 
