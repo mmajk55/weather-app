@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Moment from 'react-moment';
 import WeatherBox from '../WeatherBox/WeatherBox';
 import { StyledDailyBox, StyledDate, StyledStats, StyledWeatherBoxWrapper } from './DailyBox.styles';
-import { getMax, getMin, getMean } from '../../utils/groupData';
+import { getMinMax, getMeanTemp } from '../../utils/groupData';
 import { StyledValue } from '../WeatherBox/WeatherBox.styles';
+import { DailyBoxProps } from './DailyBox.types';
 import 'moment/locale/pl';
 
-interface IDailyBoxProps {
-  data: any;
-  day: string;
-}
+const DailyBoxComponent: React.FC<DailyBoxProps> = ({ data, day }) => {
+  const { min, max } = useMemo(() => getMinMax(data), [data]);
+  const meanTemp = useMemo(() => getMeanTemp(data.map((temp) => temp.main.temp)), [data]);
 
-const DailyBox: React.FC<IDailyBoxProps> = ({ data, day }) => {
-  console.log(data);
   return (
     <StyledDailyBox>
       <StyledStats>
@@ -20,9 +18,9 @@ const DailyBox: React.FC<IDailyBoxProps> = ({ data, day }) => {
           <Moment locale="pl" format="dddd" date={day} />
           <StyledDate>{day}</StyledDate>
         </h3>
-        <StyledValue>Min: {getMin(data)}&#186;C</StyledValue>
-        <StyledValue>Max: {getMax(data)}&#186;C</StyledValue>
-        <StyledValue>Śr: {getMean(data.map((temp) => temp.main.temp))} &#186;C</StyledValue>
+        <StyledValue>Min: {min}&#186;C</StyledValue>
+        <StyledValue>Max: {max}&#186;C</StyledValue>
+        <StyledValue>Śr: {meanTemp}&#186;C</StyledValue>
       </StyledStats>
       <StyledWeatherBoxWrapper>
         {data.map((info, i) => (
@@ -33,4 +31,4 @@ const DailyBox: React.FC<IDailyBoxProps> = ({ data, day }) => {
   );
 };
 
-export default DailyBox;
+export default React.memo(DailyBoxComponent);

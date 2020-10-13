@@ -1,30 +1,11 @@
 import React from 'react';
-import { styled } from '../../theme';
+import { StyledWrapper, StyledInputSearch } from './InputSearch.styles';
+import { InputSearchProps } from './InputSearch.types';
 
-interface IInputSearchProps {
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+const InputSearch: React.FC<InputSearchProps> = ({ onChange }) => (
+  <StyledWrapper>
+    <StyledInputSearch onChange={onChange} type="text" placeholder="Wpisz nazwę miasta" />
+  </StyledWrapper>
+);
 
-const StyledWrapper = styled.div`
-  display: flex;
-  width: 300px;
-  margin-bottom: ${(props) => props.theme.metrics.metricS};
-`;
-
-const StyledInputSearch = styled.input`
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid ${(props) => props.theme.colors.blue};
-  outline: none;
-  padding: ${(props) => props.theme.metrics.metricXS} 0;
-`;
-
-const InputSearch: React.FC<IInputSearchProps> = ({ onChange }) => {
-  return (
-    <StyledWrapper>
-      <StyledInputSearch onChange={onChange} type="text" placeholder="Wpisz nazwę miasta" />
-    </StyledWrapper>
-  );
-};
-
-export default InputSearch;
+export default React.memo(InputSearch);

@@ -1,6 +1,11 @@
 import React, { useReducer } from 'react';
 import { groupDays } from '../../utils/groupData';
-import { ProviderValue, FetchWeatherForecast, WeatherForecastState, WeatherForecastActionType } from './types';
+import {
+  ProviderValue,
+  FetchWeatherForecast,
+  WeatherForecastState,
+  WeatherForecastActionType,
+} from './weatherForecasttypes';
 
 const initialState: WeatherForecastState = {
   weatherForecastList: undefined,

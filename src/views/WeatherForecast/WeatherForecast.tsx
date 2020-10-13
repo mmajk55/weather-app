@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import Container from '../../components/Container/Container';
 import DailyBox from '../../components/DailyBox/DailyBox';
 import InputSearch from '../../components/InputSearch/InputSearch';
@@ -7,10 +7,10 @@ import Loader from 'react-loader-spinner';
 import { StyledHeader, StyledSearchWrapper, StyledWeatherForecast } from './WeatherForecast.styles';
 import { statusCodes } from '../../utils/consts';
 import { WeatherForecastContext } from '../../store/weatherForecast/weatherForecastContext';
-import { fetchWeatherForecastService } from '../../store/weatherForecast/service';
+import { fetchWeatherForecastService } from '../../store/weatherForecast/weatherForecast.service';
 import { AppContext } from '../../store/app/app.context';
-import { WeatherForecastActionType } from '../../store/weatherForecast/types';
-import { AppActionType } from '../../store/app/types';
+import { WeatherForecastActionType } from '../../store/weatherForecast/weatherForecasttypes';
+import { AppActionType } from '../../store/app/app.types';
 
 const WeatherForecast: React.FC = () => {
   const [town, setTown] = React.useState(undefined);
@@ -20,25 +20,29 @@ const WeatherForecast: React.FC = () => {
     appState: { isLoading },
   } = useContext(AppContext);
 
-  const fetchWeatherForecastHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const fetchWeatherForecastHandler = useCallback(
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
 
-    if (town) {
-      appDispatch({ type: AppActionType.LOADING });
+      if (town) {
+        appDispatch({ type: AppActionType.LOADING });
 
-      try {
-        const forecast = await fetchWeatherForecastService({ town });
-        weatherForecastDispatch({ type: WeatherForecastActionType.FETCH_WEATHER_FORECAST, payload: forecast });
-      } catch (error) {
-        appDispatch({ type: AppActionType.ERROR, data: error });
+        try {
+          const forecast = await fetchWeatherForecastService({ town });
+
+          weatherForecastDispatch({ type: WeatherForecastActionType.FETCH_WEATHER_FORECAST, payload: forecast });
+        } catch (error) {
+          appDispatch({ type: AppActionType.ERROR, data: error });
+        }
+
+        appDispatch({ type: AppActionType.STOP_LOADING });
       }
+      return;
+    },
+    [town],
+  );
 
-      appDispatch({ type: AppActionType.STOP_LOADING });
-    }
-    return;
-  };
-
-  const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => setTown(event.target.value);
+  const inputHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTown(event.target.value), []);
 
   return (
     <Container>
@@ -55,7 +59,6 @@ const WeatherForecast: React.FC = () => {
         {weatherForecastState && weatherForecastState.city && <h2>Miasto: {weatherForecastState.city}</h2>}
         {weatherForecastState &&
           weatherForecastState.weatherForecastList &&
-          weatherForecastState.statusCode === statusCodes.SUCCESS &&
           Object.keys(weatherForecastState.weatherForecastList).map((key, i) => (
             <DailyBox key={i} day={key} data={weatherForecastState.weatherForecastList[key]} />
           ))}

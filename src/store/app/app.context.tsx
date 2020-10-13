@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { AppActionType, ProviderValue, AppState, AppActions, Loading, StopLoading, Error } from './types';
+import { AppActionType, ProviderValue, AppState, AppActions } from './app.types';
 
 const initialappState: AppState = {
   error: undefined,
