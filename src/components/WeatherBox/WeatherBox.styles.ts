@@ -12,4 +12,9 @@ export const StyledValue = styled.div`
   color: ${(props) => props.theme.colors.blue};
   text-align: center;
   margin-bottom: ${(props) => props.theme.metrics.metricXS};
+  padding: 0 ${(props) => props.theme.metrics.metricXS};
+
+  &:first-of-type {
+    margin-left: ${(props) => props.theme.metrics.metricS};
+  }
 `;
