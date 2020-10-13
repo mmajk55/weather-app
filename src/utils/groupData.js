@@ -8,11 +8,10 @@ export const groupDays = (weatherForecastData) => {
   return groupedData;
 };
 
-export const getMinMax = (arr) => {
+export const getStats = (arr) => {
   return {
-    min: Math.round(Math.max(...arr.map((item) => item.main.temp))),
-    max: Math.round(Math.min(...arr.map((item) => item.main.temp))),
+    min: Math.round(Math.max(...arr)),
+    max: Math.round(Math.min(...arr)),
+    mean: Math.round(arr.reduce((a, b) => a + b) / arr.length),
   };
 };
-
-export const getMeanTemp = (arr) => Math.round(arr.reduce((a, b) => a + b) / arr.length);
