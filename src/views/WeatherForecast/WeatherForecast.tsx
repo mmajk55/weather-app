@@ -84,6 +84,9 @@ const WeatherForecast: React.FC = () => {
             <DailyBox key={i} day={key} data={weatherForecastList[key]} />
           ))}
         {statusCode && statusCode === statusCodes.NOT_FOUND && <p>Nie znaleziono miasta.</p>}
+        {statusCode && !Object.values(statusCodes).includes(statusCode) && (
+          <p>Coś poszło nie tak :( spróbuj ponownie później.</p>
+        )}
       </StyledWeatherForecast>
     </Container>
   );
